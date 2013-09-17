@@ -1,0 +1,197 @@
+.g-prices-container {
+  bottom:0;
+  left:0;
+  position:absolute;
+}
+#g-histogram {
+  font-size: 15px;
+  margin: 3px 0;
+  height: 215px;
+  font-family: "nyt-franklin";
+  line-height: 1.4em;
+  position: relative;
+  margin: 30px 0;
+}
+
+.g-subscription-prices-subhed {
+  font-size: 11px;
+  text-transform: uppercase;
+  font-weight: normal;
+  margin: 3px 0;
+}
+/*
+.g-sepn-g .g-per-sub {
+  font-size:11px !important;
+  font-weight:normal;
+}
+.g-espn-subhed.text {
+  font-size:14px;
+  font-weight:bold;
+}*/
+
+.g-espn-g .g-espn-subhed {
+  font-size:14px;
+  font-weight:bold;
+}
+
+
+.g-prices-bar {
+  fill: #ddd;
+}
+
+.g-espn-g rect {
+  fill:orange;
+}
+.g-prices-source {
+  font-size: 11px;
+  color: #999;
+  margin-left:150px;
+}
+.g-hed-chatter {
+  position: absolute;
+  width: 300px;
+  left: 150px;
+  bottom: 90px;
+}
+.g-small-hed {
+  font-size:17px;
+  margin-bottom:10px;
+}
+#g-histogram .g-readin {
+  font-size:15px;
+  width:500px;
+  font-family: "nyt-franklin";
+  line-height: 1.4em;
+}
+.g-labeled-rect rect {
+  fill:#999;
+}
+.g-labeled-rect text {
+  text-anchor: end;
+}
+.g-axislabel {
+  font-size: 13px;
+  font-weight: bold;
+  position: absolute;
+}
+.g-xaxislabel {
+  left: 110px;
+  bottom: 11px;
+}
+.g-yaxislabel {
+  width: 70px;
+  left: 15px;
+  top: 20px;
+}
+
+
+.g-last text {
+  text-anchor:end !important;
+}
+.x.axis .tick:last-child  {
+  fill:red !important;
+}
+.g-label {
+	fill:#444;
+	font-size:8px;
+}
+
+.g-dot {
+	fill:red;
+}
+
+.axis .domain {
+  display: none;
+}
+
+.axis.bottomaxis line {
+  stroke-width:1px;
+  stroke:#000;
+}
+
+.bar rect {
+  /*shape-rendering: crispEdges;*/
+}
+
+.bar text {
+  fill: #000;
+  font-size:11px;
+}
+
+.axis path, .axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.axis text {
+	font-size:11px;
+}
+
+.espn-label {
+	text-anchor:middle;
+	font-size:14px;
+	font-weight:bold;
+}
+
+.tick:first-child text {
+  display: none;
+}
+
+.tick:last-child text {
+  text-anchor: end !important;
+  fill:red;
+  /*left: -10px;*/
+}
+
+.g-labeled-mobile-rect rect {
+  fill:#333;
+}
+
+.g-mobile-labels {
+  text-anchor:end;
+}
+
+
+
+@media only screen and (max-width: 767px)  {
+
+.g-prices-mobile-container {
+  display: block !important;
+}
+
+.g-prices-container {
+  display: none;
+}
+
+#g-histogram .g-readin {
+  width:75%;
+}
+
+#g-histogram {
+  height:420px;
+}
+.g-hed-chatter {
+  left:0;
+  top:20px;
+}
+
+.g-subscription-prices-subhed {
+width: 100px;
+line-height: 13px;
+font-weight: bold;
+}
+
+.g-prices-source {
+  margin-left:0;
+}
+
+}
+
+
+
+
+
+
+
+

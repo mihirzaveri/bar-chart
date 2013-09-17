@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<!-- saved from url=(0080)http://shancarter.github.io/ucb-dataviz-fall-2013/classes/charts-intro/0-d3.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta charset="utf-8">
+        <title>D3 Test</title>
+        <script src="./index_files/d3.v3.min.js" charset="utf-8"></script><style type="text/css"></style>
+        <style type="text/css">
+				svg {
+				  border: 2px solid orange;
+				}
+				
+				.testbar {
+				  fill: #ff00ff;
+				}
+				
+				.bar {
+  					fill: #ddd;
+				}
+				.gESPN {
+      			fill: red;
+   			}
+			</style>
+
+    </head>
+    <body>
+        <script type="text/javascript">
+            // Your beautiful D3 code will go here
+            d3.select("body").append("h1").text("My first bar char6t")
+            
+            var margin = {top: 20, right: 10, bottom: 20, left: 10};
+
+				var width = 600 - margin.left - margin.right, height = 250 - margin.top - margin.bottom;
+				
+				var svg = d3.select("body").append("svg");
+				
+				svg.attr("width", width + margin.left + margin.right)
+				    .attr("height", height + margin.top + margin.bottom)
+				    
+				var group = svg.append("g")
+				    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+				    
+				d3.csv("subscription-prices.csv", function(err, prices) {
+					prices.forEach(function(d) {
+    			// recasts d.2013 as a number, not a string
+    				d.X2013 = +d.X2013;
+    				});
+    				prices.sort(function(a,b) {
+    				return a.X2013 - b.X2013;
+					});
+          		console.log(prices);
+					
+					var y = d3.scale.linear()
+					    .domain([0,6])
+					    .range([0,height]);
+					
+					var x = d3.scale.linear()
+					    .domain([0,prices.length])
+					    .range([0,width]);    
+					    
+					var bar = svg.selectAll(".bar")
+    					.data(prices)
+  						.enter().append("rect")
+  						.attr("height", function(d) { 
+  							return y(d.X2013); 
+  						})
+          			.attr("width", 2)
+          			.attr("y", function(d) { return height - y(d.X2013)  })
+          			.attr("x", function(d, i) { return 3 * i})
+    					.attr("class", "bar")
+    					.classed("gESPN", function(d) { return d.Network == "ESPN"})
+    				
+    				svg.append("text")
+   				.attr("class", "g-label")
+    				.attr("x", 530)
+    				.attr("y", 30)
+    				.text("ESPN")
+  		
+        		});
+        		
+
+    
+        </script>
+	</body>
+</html>
