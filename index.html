@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>D3 Test</title>
+        <script type="text/javascript" src="d3/d3.v3.js"></script>
+        <style type="text/css">
+				
+				svg {
+					border-bottom: 1px;
+				}
+				
+				.bar {
+  					fill: #ddd;
+				}
+				
+				.g-ESPN {
+      			fill: orange;
+    			}
+
+    			.g-minor-highlight {
+					fill: #999;			
+    			}
+    			
+    			.g-text-minor-highlight {
+					fill: #000;
+					font-family: arial, sans-serif;
+					font-size: 11px;    			
+    			}
+    			
+    			.g-label {
+					font-family: arial, sans-serif;
+					font-size: 13px;  
+					font-weight:bold; 			
+    			}
+    			
+    			.axis path,
+    			
+    			.axis .domain {
+  					display: none;
+				}
+
+				.axis.bottomaxis line {
+  					stroke-width:1px;
+  					stroke:#000;
+				}
+
+				.axis line {
+    				fill: none;
+    				stroke: black;
+    				shape-rendering: crispEdges;
+				}
+
+				.axis text {
+				    font-family: sans-serif;
+				    font-size: 11px;
+				}
+				
+</style>
+    </head>
+    <body>
+        <script type="text/javascript">
+        
+		//OVERARCHING Q'S:
+			//Why is the y-axis scale flipped upside down? I feel like somewhere in the hack we did to get the bars lined up (height - y(d.X2013)) and //defining the scale we lost the ability to create a proper y axis.
+
+		//Defining the margins
+
+            var margin = {top: 20, right: 100, bottom: 10, left: 0};
+
+				//Defining variables for width and height
+				var width = 950 - margin.left - margin.right,
+				height = 600 - margin.top - margin.bottom;
+				    
+			 	//Y Scale
+				
+				var y = d3.scale.linear()
+					.domain([0,5.6])
+			    	.range([0,height]);
+
+				    
+				//Axes
+				
+				//Q: What is going on here?
+				var formatCount = d3.format(",.0f");
+ 				var f = d3.format("$.0f");	
+				
+				var yAxis = d3.svg.axis()
+					.scale(y)					
+					.tickFormat(f)
+  					.tickValues([1,2,3,4,5])
+  					.orient("right");
+  				
+  				var bottomyAxis = d3.svg.axis()
+  					.scale(y)
+  					.tickValues([0])
+  					.tickSize(width)
+  					.orient("right");
+
+  				//Q: Why does appending the svg have to be stored as a variable and why isn't the variable being called anywhere?
+				var svg = d3.select("body").append("svg")
+				    .attr("width", width + margin.left + margin.right)
+				    .attr("height", height + margin.top + margin.bottom)
+				    .append("g")
+				    //Q: What are the pluses?
+				    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+  									
+				svg.append("g")
+					.attr("class", "axis")
+   					.attr("transform", "translate(" + width + ",0)" )
+					.call(yAxis);
+				
+				svg.append("g")
+   				.attr("class", "bottomaxis")
+   				.attr("transform", "translate(0," + height + ")" )
+   				.call(bottomyAxis)
+   				.attr("class", "axis bottomaxis");
+		
+				
+				//This section loading data, making data number from string, then joining it to bars for the bar chart.
+				d3.csv("subscription-prices.csv", function(err, prices) {
+
+
+					//Numbers as string
+					prices.forEach(function(d) {
+    				// recasts d.2013 as a number, not a string
+    				d.X2013 = +d.X2013;
+					});
+					
+					//Sorting the numbers
+					prices.sort(function(a,b) {
+    					return a.X2013 - b.X2013;
+					});
+				
+					//X scale
+					var x = d3.scale.ordinal()
+					    .domain([0,prices.length])
+					    .range([0,width]);
+					 
+					//Networks highlighted
+					var networks = ["Comedy Central","TNT", "C-SPAN"];
+				    
+				    //Defining the bar variables
+				  	var bar = svg.selectAll(".bar")
+						.data(prices)
+						.enter().append("rect")
+						.attr("height", function(d) { 
+											return y(d.X2013); 
+											})
+						.attr("width", 4)
+						//4.38 comes from the 850 width of the chart divided by the 192 observations in the data
+       					.attr("x", function(d, i) {
+       									return 4.38 * i;
+       									})
+       					.attr("y", function(d) { 
+       									return height - y(d.X2013);  
+       									})
+						.attr("class", "bar")
+				
+						//Identifying the networks that are identified in the NYT graphic (dark grey)					 	
+						
+						.classed("g-ESPN", function(d) { 
+													return d.Network == "ESPN"
+												})
+						.classed("g-minor-highlight", function(d) { 
+																	return networks.indexOf(d.Network) >= 0; 
+																});
+														
+					console.log(prices)
+				});
+				
+				//Labels for highlighted Networks
+				
+				//ESPN
+				svg.append("text")
+					.attr("class", "g-label")
+				 	.attr("x", 855)
+				  	.attr("y", 15)
+				  	.text("ESPN");
+
+				//ESPN DESCRIPTION PART 1
+				svg.append("text")
+					.attr("class", "g-text-minor-highlight")
+				 	.attr("x", 855)
+				  	.attr("y", 28)
+				  	.text("$5.54");
+
+				//ESPN DESCRIPTION PART 2				
+				svg.append("text")
+					.attr("class", "g-text-minor-highlight")
+				 	.attr("x", 855)
+				  	.attr("y", 40)
+				  	.text("per subscriber");
+
+				//TNT
+				svg.append("text")
+					.attr("class", "g-text-minor-highlight")
+				 	.attr("x", 770)
+				  	.attr("y", 435)
+				  	.text("TNT ($1.24)");
+
+				//Comedy Central
+				svg.append("text")
+					.attr("class", "g-text-minor-highlight")
+				 	.attr("x", 490)
+				  	.attr("y", 545)
+				  	.text("Comedy Central ($0.18)");
+
+				//C-SPAN
+				svg.append("text")
+					.attr("class", "g-text-minor-highlight")
+				 	.attr("x", 101)
+				  	.attr("y", 559)
+				  	.text("C-SPAN ($0.06)");					
+				    
+        </script>
+    </body>
+</html>     
