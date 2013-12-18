@@ -2,7 +2,7 @@
 <html lang="en">
     <head>
         <meta charset="utf-8">
-        <title>D3 Test</title>
+        <title>Bar Chart: Recreating NY Times ESPN Graphic</title>
         <script type="text/javascript" src="d3/d3.v3.js"></script>
         <style type="text/css">
 				
@@ -32,6 +32,12 @@
 					font-family: arial, sans-serif;
 					font-size: 13px;  
 					font-weight:bold; 			
+    			}
+
+    			.chart_title{
+    				font-family: arial, sans-serif;
+    				font-size: 16px;
+    				font-weight: bold;
     			}
     			
     			.axis path,
@@ -182,8 +188,15 @@
 					console.log(prices)
 				});
 				
-				//Labels for highlighted Networks
+				//Title + labels for highlighted Networks
 				
+				//TITLE
+				svg.append("text")
+					.attr("class", "chart_title")
+				 	.attr("x", 100)
+				  	.attr("y", 400)
+				  	.text("An Expensive Outlier");
+
 				//ESPN
 				svg.append("text")
 					.attr("class", "g-label")
